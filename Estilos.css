@@ -1,0 +1,14 @@
+.titulo {
+    background-color:black;
+    color: greenyellow;
+}
+
+h1{
+    border: black;
+    text-decoration: underline;
+}
+
+
+#logo {
+    width: 5rem;
+}
