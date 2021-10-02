@@ -1,0 +1,27 @@
+
+
+    .title{
+        color: rgb(188, 192, 187);
+        text-align: left;
+        padding: 1%;
+        margin: 0% 8%;
+        
+      }
+      
+      form{
+        margin-top: 2.5%;
+        color: rgb(188, 192, 187);
+        text-align: left;
+        margin: 2.5% 10%;
+      }
+      
+      body{  
+        background-color: rgb(56, 55, 55);
+        background-image: url(../media/ventas.png);
+        background-position: left;
+        background-repeat: no-repeat;   
+        background-position: 800px 0px;
+        background-size: 100%;
+           
+      }
+    
