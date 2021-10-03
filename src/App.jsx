@@ -16,10 +16,10 @@ function App() {
             <Route path='/pagina4'>
               <Pagina4 />
             </Route>
-            <Route path='/pagina2'>
+            <Route path='/pagina1'>
               <Pagina1 />
             </Route>
-            <Route path='/'>
+            <Route path='/pagina2'>
               <Pagina2 />
             </Route>
           </Switch>
