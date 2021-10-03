@@ -1,0 +1,14 @@
+.GU{
+    margin-left: 3%;
+    text-align:left;
+    color: aliceblue;
+  }
+  
+  #vendi{
+    height: 270px;
+  }
+  #admi{
+    position: fixed;
+    background-position: top;
+    height: 220px;
+  }
