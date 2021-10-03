@@ -9,10 +9,9 @@ function PaginaP() {
           <label className="menu" for="check">|||</label>
           <div className="left-panel">
         <ul>
-            <Link to='/pagina1'><li>Módulo 1</li></Link>
-            <Link to=''><li>Módulo 2</li></Link>
-            <Link to=''><li>Módulo 3</li></Link>
-            <Link to=''><li>Módulo 4</li></Link>
+            <Link to='/pagina1'><li>Módulo Administrador de Productos</li></Link>
+            <Link to='/pagina2'><li>Getión de usuarios</li></Link>
+            <Link to='/pagina4'><li>Módulo Administración de Ventas</li></Link>
         </ul>
     </div>
       </div>

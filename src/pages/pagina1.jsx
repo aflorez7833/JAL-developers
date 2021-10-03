@@ -4,7 +4,7 @@ import '../styles/styles.css';
     return (
         <div>
         <head>
-            <title>Modulo Administrador de Productos</title>
+            <title>Módulo Administrador de Productos</title>
         </head>
         <body>
                       

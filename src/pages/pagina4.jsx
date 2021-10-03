@@ -6,7 +6,7 @@ function Pagina4() {
     return (
         <div>
         <head>
-            <title>Modulo Administracion de Ventas</title>
+            <title>Módulo Administración de Ventas</title>
         </head>
         <body>
                            
