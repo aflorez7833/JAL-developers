@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';
 import { nanoid } from 'nanoid';
 import { Dialog, Tooltip } from '@material-ui/core';
 import { obtenerProductos } from 'utils/api';
 import 'react-toastify/dist/ReactToastify.css';
+import { crearProductos } from 'utils/api';
 
 const Productos = () => {
   const [mostrarTabla, setMostrarTabla] = useState(true);
@@ -16,12 +16,20 @@ const Productos = () => {
   useEffect(() => {
     console.log('consulta', ejecutarConsulta);
     if (ejecutarConsulta) {
-      obtenerProductos(setProductos, setEjecutarConsulta);
+      obtenerProductos(
+        (response) => {
+          setProductos(response.data);
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+      setEjecutarConsulta(false);
     }
   }, [ejecutarConsulta]);
 
   useEffect(() => {
-    //obtener lista de vehículos desde el backend
+  //obtener lista de productos desde el backend
     if (mostrarTabla) {
       setEjecutarConsulta(true);
     }
@@ -66,7 +74,7 @@ const Productos = () => {
 };
 
 const TablaProductos = ({ listaProductos, setEjecutarConsulta }) => {
-  const [busqueda] = useState('');
+  const [busqueda, setBusqueda] = useState('');
   const [productosFiltrados, setProductosFiltrados] = useState(listaProductos);
 
   useEffect(() => {
@@ -79,13 +87,19 @@ const TablaProductos = ({ listaProductos, setEjecutarConsulta }) => {
 
   return (
     <div className='flex flex-col items-center justify-center w-full'>
+      <input
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+        placeholder='Buscar'
+        className='border-2 border-gray-700 px-3 py-1 self-start rounded-md focus:outline-none focus:border-indigo-500'
+      />
       <h2 className='text-2xl font-extrabold text-gray-800'>Todos los Productos</h2>
       <div className='hidden md:flex w-full'>
         <table className='tabla'>
           <thead>
             <tr>
               <th>ID Producto</th>
-              <th>Producto</th>
+              <th>Nombre del Producto</th>
               <th>Cantidad</th>
               <th>Acciones</th>
             </tr>
@@ -107,9 +121,9 @@ const TablaProductos = ({ listaProductos, setEjecutarConsulta }) => {
         {productosFiltrados.map((el) => {
           return (
             <div className='bg-gray-400 m-2 shadow-xl flex flex-col p-2 rounded-xl'>
-              <span>{el.name}</span>
-              <span>{el.brand}</span>
-              <span>{el.model}</span>
+              <span>{el.id}</span>
+              <span>{el.nombre}</span>
+              <span>{el.cantidad}</span>
             </div>
           );
         })}
@@ -122,49 +136,44 @@ const FilaProducto = ({ producto, setEjecutarConsulta }) => {
   const [edit, setEdit] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [infoNuevoProducto, setInfoNuevoProducto] = useState({
-    name: producto.name,
-    brand: producto.brand,
-    model: producto.model,
+    _id: producto._id,
+    nombre: producto.nombre,
+    cantidad: producto.cantidad,
+    
   });
 
   const actualizarProducto = async () => {
     //enviar la info al backend
-    const options = {
-      method: 'PATCH',
-      url: 'https://vast-waters-45728.herokuapp.com/vehicle/update/',
-      headers: { 'Content-Type': 'application/json' },
-      data: { ...infoNuevoProducto, id: producto._id },
-    };
-
-    await axios
-      .request(options)
-      .then(function (response) {
+    await actualizarProducto(
+      producto._id,
+      { ...infoNuevoProducto },
+      (response) => {
+        console.log(response.data);
+        toast.success('producto modificado con éxito');
         setEdit(false);
         setEjecutarConsulta(true);
-      })
-      .catch(function (error) {
-        toast.error('');
+      },
+      (error) => {
+        toast.error('Error modificando el producto');
         console.error(error);
-      });
+      }
+    );
   };
-
+  
   const eliminarProducto = async () => {
-    const options = {
-      method: 'DELETE',
-      url: 'https://vast-waters-45728.herokuapp.com/vehicle/delete/',
-      headers: { 'Content-Type': 'application/json' },
-      data: { id: producto._id },
-    };
-
-    await axios
-      .request(options)
-      .then(function (response) {
+    await eliminarProducto(
+      producto._id,
+      (response) => {
+        console.log(response.data);
+        toast.success('producto eliminado con éxito');
         setEjecutarConsulta(true);
-      })
-      .catch(function (error) {
+      },
+      (error) => {
         console.error(error);
-        toast.error('');
-      });
+        toast.error('Error eliminando el producto');
+      }
+    );
+
     setOpenDialog(false);
   };
 
@@ -175,37 +184,37 @@ const FilaProducto = ({ producto, setEjecutarConsulta }) => {
           <td>
             <input
               className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
-              type='text'
-              value={infoNuevoProducto.name}
-              onChange={(e) => setInfoNuevoProducto({ ...infoNuevoProducto, name: e.target.value })}
+              type='number'
+              value={infoNuevoProducto.id}
+              onChange={(e) => setInfoNuevoProducto({ ...infoNuevoProducto, id: e.target.value })}
             />
           </td>
           <td>
             <input
               className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
               type='text'
-              value={infoNuevoProducto.brand}
+              value={infoNuevoProducto.nombre}
               onChange={(e) =>
-                setInfoNuevoProducto({ ...infoNuevoProducto, brand: e.target.value })
+                setInfoNuevoProducto({ ...infoNuevoProducto, nombre: e.target.value })
               }
             />
           </td>
           <td>
             <input
               className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
-              type='text'
-              value={infoNuevoProducto.model}
+              type='number'
+              value={infoNuevoProducto.cantidad}
               onChange={(e) =>
-                setInfoNuevoProducto({ ...infoNuevoProducto, model: e.target.value })
+                setInfoNuevoProducto({ ...infoNuevoProducto, cantidad: e.target.value })
               }
             />
           </td>
         </>
       ) : (
         <>
-          <td>{producto.name}</td>
-          <td>{producto.brand}</td>
-          <td>{producto.model}</td>
+          <td>{producto._id.slice(20)}</td>
+          <td>{producto.nombre}</td>
+          <td>{producto.cantidad}</td>
         </>
       )}
       <td>
@@ -227,7 +236,7 @@ const FilaProducto = ({ producto, setEjecutarConsulta }) => {
             </>
           ) : (
             <>
-              <Tooltip title='Editar Vehículo' arrow>
+              <Tooltip title='Editar producto' arrow>
                 <i
                   onClick={() => setEdit(!edit)}
                   className='fas fa-pencil-alt text-yellow-700 hover:text-yellow-500'
@@ -280,23 +289,21 @@ const FormularioCreacionProductos = ({ setMostrarTabla, listaProductos, setProdu
       nuevoProducto[key] = value;
     });
 
-    const options = {
-      method: 'POST',
-      url: 'https://vast-waters-45728.herokuapp.com/vehicle/create',
-      headers: { 'Content-Type': 'application/json' },
-      data: { name: nuevoProducto.name, brand: nuevoProducto.brand, model: nuevoProducto.model },
-    };
-
-    await axios
-      .request(options)
-      .then(function (response) {
-        
-      })
-      .catch(function (error) {
+    await crearProductos(
+      {
+        id: nuevoProducto.id,
+        nombre: nuevoProducto.nombre,
+        cantidad: nuevoProducto.cantidad,
+      },
+      (response) => {
+        console.log(response.data);
+        toast.success('Producto agregado con éxito');
+      },
+      (error) => {
         console.error(error);
-        toast.error('');
-      });
-
+        toast.error('Error creando un producto');
+      }
+    );
     setMostrarTabla(true);
   };
 
@@ -304,7 +311,7 @@ const FormularioCreacionProductos = ({ setMostrarTabla, listaProductos, setProdu
     <div className='flex flex-col items-center justify-center'>
       <h2 className='text-2xl font-extrabold text-gray-800'>Crear nuevo Producto</h2>
       <form ref={form} onSubmit={submitForm} className='flex flex-col'>
-        <label className='flex flex-col' htmlFor='nombre'>
+        <label className='flex flex-col' htmlFor='id'>
           ID Producto
           <input
             name='name'
@@ -313,18 +320,19 @@ const FormularioCreacionProductos = ({ setMostrarTabla, listaProductos, setProdu
             required
           />
         </label>
-        <label className='flex flex-col' htmlFor='marca'>
-          Producto
+        <label className='flex flex-col' htmlFor='nombre'>
+          Nombre del Producto
           <input
-            className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
             name='name'
+            className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
+            type='text'
             required
           />
         </label>
-        <label className='flex flex-col' htmlFor='modelo'>
+        <label className='flex flex-col' htmlFor='cantidad'>
           Cantidad
           <input
-            name='descripcion'
+            name='name'
             className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
             type='number'
             required
