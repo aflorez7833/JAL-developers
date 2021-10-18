@@ -66,7 +66,7 @@ const Productos = () => {
 };
 
 const TablaProductos = ({ listaProductos, setEjecutarConsulta }) => {
-  const [busqueda] = useState('');
+  const [busqueda, setBusqueda] = useState('');
   const [productosFiltrados, setProductosFiltrados] = useState(listaProductos);
 
   useEffect(() => {
@@ -79,6 +79,9 @@ const TablaProductos = ({ listaProductos, setEjecutarConsulta }) => {
 
   return (
     <div className='flex flex-col items-center justify-center w-full'>
+      <input value={busqueda} 
+      onChange={e=>setBusqueda(e.target.value)} placeholder='buscar' className
+      ="border border-gray-700 px-3 py-2 self-start rounded-md focus:outline-none focus:border-indigo-500"/>
       <h2 className='text-2xl font-extrabold text-gray-800'>Todos los Productos</h2>
       <div className='hidden md:flex w-full'>
         <table className='tabla'>
@@ -181,14 +184,21 @@ const FilaProducto = ({ producto, setEjecutarConsulta }) => {
             />
           </td>
           <td>
-            <input
+            <select>
+              <option value=''>Toyota </option>
+              <option value=''>Mazda </option>
+              <option value=''>Renault </option>
+              <option value=''>Ford </option>
+              <option value=''>Chevrolet </option>
+            </select>
+            {/*<input
               className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
               type='text'
               value={infoNuevoProducto.brand}
               onChange={(e) =>
                 setInfoNuevoProducto({ ...infoNuevoProducto, brand: e.target.value })
               }
-            />
+            />*/}
           </td>
           <td>
             <input
@@ -268,7 +278,7 @@ const FilaProducto = ({ producto, setEjecutarConsulta }) => {
   );
 };
 
-const FormularioCreacionProductos = ({ setMostrarTabla, listaProductos, setProductos }) => {
+const FormularioCreacionProductos = ({ setMostrarTabla, listaProductos, setProductos, setEdit}) => {
   const form = useRef(null);
 
   const submitForm = async (e) => {
@@ -290,7 +300,9 @@ const FormularioCreacionProductos = ({ setMostrarTabla, listaProductos, setProdu
     await axios
       .request(options)
       .then(function (response) {
-        
+        console.log(response.data);
+        toast.success('producto modificado con éxito');
+        setEdit(false);
       })
       .catch(function (error) {
         console.error(error);
