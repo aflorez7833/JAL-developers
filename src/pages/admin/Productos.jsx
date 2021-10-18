@@ -184,21 +184,32 @@ const FilaProducto = ({ producto, setEjecutarConsulta }) => {
             />
           </td>
           <td>
-            <select>
-              <option value=''>Toyota </option>
-              <option value=''>Mazda </option>
-              <option value=''>Renault </option>
-              <option value=''>Ford </option>
-              <option value=''>Chevrolet </option>
-            </select>
-            {/*<input
+           {/* <select className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2' >
+              
+              <option type='text' value={infoNuevoProducto.brand}
+              onChange={(e) =>
+                setInfoNuevoProducto({ ...infoNuevoProducto, brand: e.target.value })}>Toyota </option>
+              <option type='text' value={infoNuevoProducto.brand}
+              onChange={(e) =>
+                setInfoNuevoProducto({ ...infoNuevoProducto, brand: e.target.value })}>Mazda </option>
+              <option type='text' value={infoNuevoProducto.brand}
+              onChange={(e) =>
+                setInfoNuevoProducto({ ...infoNuevoProducto, brand: e.target.value })}>Renault </option>
+              <option type='text' value={infoNuevoProducto.brand}
+              onChange={(e) =>
+                setInfoNuevoProducto({ ...infoNuevoProducto, brand: e.target.value })}>Ford </option>
+              <option type='text' value={infoNuevoProducto.brand}
+              onChange={(e) =>
+                setInfoNuevoProducto({ ...infoNuevoProducto, brand: e.target.value })}>Chevrolet </option>
+              </select>*/}
+            <input
               className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
               type='text'
               value={infoNuevoProducto.brand}
               onChange={(e) =>
                 setInfoNuevoProducto({ ...infoNuevoProducto, brand: e.target.value })
               }
-            />*/}
+            />
           </td>
           <td>
             <input
