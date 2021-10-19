@@ -10,12 +10,17 @@ import 'styles/styles.css';
 import Registro from 'pages/auth/Registro';
 import AuthLayout from 'layouts/AuthLayout';
 import { DarkModeContext } from 'context/darkMode';
+import { GoogleLogin } from 'react-google-login';
+
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   useEffect(() => {
     console.log('modo dark:', darkMode);
   }, [darkMode]);
+  const responseGoogle=(respuesta)=>{
+    console.log(respuesta);
+  }
 
   return (
     <div className='App'>
@@ -56,6 +61,13 @@ function App() {
           </Switch>
         </Router>
       </DarkModeContext.Provider>
+      <GoogleLogin
+    clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+    buttonText="Login"
+    onSuccess={responseGoogle}
+    onFailure={responseGoogle}
+    cookiePolicy={'single_host_origin'}
+  />
     </div>
   );
 }

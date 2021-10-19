@@ -6,6 +6,7 @@ import { Dialog, Tooltip } from '@material-ui/core';
 import { obtenerProductos } from 'utils/api';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const Productos = () => {
   const [mostrarTabla, setMostrarTabla] = useState(true);
   const [productos, setProductos] = useState([]);
@@ -110,9 +111,9 @@ const TablaProductos = ({ listaProductos, setEjecutarConsulta }) => {
         {productosFiltrados.map((el) => {
           return (
             <div className='bg-gray-400 m-2 shadow-xl flex flex-col p-2 rounded-xl'>
-              <span>{el.name}</span>
-              <span>{el.brand}</span>
-              <span>{el.model}</span>
+              <span>{el.IDproducto}</span>
+              <span>{el.produto}</span>
+              <span>{el.cantidad}</span>
             </div>
           );
         })}
@@ -125,9 +126,9 @@ const FilaProducto = ({ producto, setEjecutarConsulta }) => {
   const [edit, setEdit] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [infoNuevoProducto, setInfoNuevoProducto] = useState({
-    name: producto.name,
-    brand: producto.brand,
-    model: producto.model,
+    IDproducto: producto.IDproducto,
+    producto: producto.producto,
+    cantidad: producto.cantidad,
   });
 
   const actualizarProducto = async () => {
@@ -179,8 +180,8 @@ const FilaProducto = ({ producto, setEjecutarConsulta }) => {
             <input
               className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
               type='text'
-              value={infoNuevoProducto.name}
-              onChange={(e) => setInfoNuevoProducto({ ...infoNuevoProducto, name: e.target.value })}
+              value={infoNuevoProducto.IDproducto}
+              onChange={(e) => setInfoNuevoProducto({ ...infoNuevoProducto, IDproducto: e.target.value })}
             />
           </td>
           <td>
@@ -205,9 +206,9 @@ const FilaProducto = ({ producto, setEjecutarConsulta }) => {
             <input
               className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
               type='text'
-              value={infoNuevoProducto.brand}
+              value={infoNuevoProducto.producto}
               onChange={(e) =>
-                setInfoNuevoProducto({ ...infoNuevoProducto, brand: e.target.value })
+                setInfoNuevoProducto({ ...infoNuevoProducto, producto: e.target.value })
               }
             />
           </td>
@@ -215,18 +216,18 @@ const FilaProducto = ({ producto, setEjecutarConsulta }) => {
             <input
               className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
               type='text'
-              value={infoNuevoProducto.model}
+              value={infoNuevoProducto.cantidad}
               onChange={(e) =>
-                setInfoNuevoProducto({ ...infoNuevoProducto, model: e.target.value })
+                setInfoNuevoProducto({ ...infoNuevoProducto, cantidad: e.target.value })
               }
             />
           </td>
         </>
       ) : (
         <>
-          <td>{producto.name}</td>
-          <td>{producto.brand}</td>
-          <td>{producto.model}</td>
+          <td>{producto.IDproducto}</td>
+          <td>{producto.producto}</td>
+          <td>{producto.cantidad}</td>
         </>
       )}
       <td>
@@ -303,9 +304,9 @@ const FormularioCreacionProductos = ({ setMostrarTabla, listaProductos, setProdu
 
     const options = {
       method: 'POST',
-      url: 'https://vast-waters-45728.herokuapp.com/vehicle/create',
+      url: 'http://localhost:5000/productos/nuevo/',
       headers: { 'Content-Type': 'application/json' },
-      data: { name: nuevoProducto.name, brand: nuevoProducto.brand, model: nuevoProducto.model },
+      data: { IDproducto: nuevoProducto.IDproducto, producto: nuevoProducto.producto, cantidad: nuevoProducto.cantidad },
     };
 
     await axios
@@ -313,11 +314,11 @@ const FormularioCreacionProductos = ({ setMostrarTabla, listaProductos, setProdu
       .then(function (response) {
         console.log(response.data);
         toast.success('producto modificado con éxito');
-        setEdit(false);
+        
       })
       .catch(function (error) {
         console.error(error);
-        toast.error('');
+        toast.error('error al adicionar el producto');
       });
 
     setMostrarTabla(true);
@@ -330,26 +331,27 @@ const FormularioCreacionProductos = ({ setMostrarTabla, listaProductos, setProdu
         <label className='flex flex-col' htmlFor='nombre'>
           ID Producto
           <input
-            name='name'
+            name='IDproducto'
             className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
-            type='number'
+            type='text'
             required
           />
         </label>
-        <label className='flex flex-col' htmlFor='marca'>
+        <label className='flex flex-col' htmlFor='producto'>
           Producto
           <input
             className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
             name='name'
+            type='text'
             required
           />
         </label>
-        <label className='flex flex-col' htmlFor='modelo'>
+        <label className='flex flex-col' htmlFor='cantidad'>
           Cantidad
           <input
             name='descripcion'
             className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
-            type='number'
+            type='text'
             required
           />
         </label>
