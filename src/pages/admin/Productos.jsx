@@ -145,9 +145,11 @@ const FilaProducto = ({ producto, setEjecutarConsulta }) => {
       .then(function (response) {
         setEdit(false);
         setEjecutarConsulta(true);
+        console.log(response.data);
+        toast.success('producto modificado con éxito');
       })
       .catch(function (error) {
-        toast.error('');
+        toast.error('error al adicionar el producto');
         console.error(error);
       });
   };
@@ -164,10 +166,12 @@ const FilaProducto = ({ producto, setEjecutarConsulta }) => {
       .request(options)
       .then(function (response) {
         setEjecutarConsulta(true);
+        console.log(response.data);
+        toast.success('producto eliminado con éxito');
       })
       .catch(function (error) {
         console.error(error);
-        toast.error('');
+        toast.error('error al adicionar el producto');
       });
     setOpenDialog(false);
   };
@@ -313,7 +317,7 @@ const FormularioCreacionProductos = ({ setMostrarTabla, listaProductos, setProdu
       .request(options)
       .then(function (response) {
         console.log(response.data);
-        toast.success('producto modificado con éxito');
+        toast.success('producto adicionado con éxito');
         
       })
       .catch(function (error) {
@@ -341,7 +345,7 @@ const FormularioCreacionProductos = ({ setMostrarTabla, listaProductos, setProdu
           Producto
           <input
             className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
-            name='name'
+            name='producto'
             type='text'
             required
           />
@@ -349,7 +353,7 @@ const FormularioCreacionProductos = ({ setMostrarTabla, listaProductos, setProdu
         <label className='flex flex-col' htmlFor='cantidad'>
           Cantidad
           <input
-            name='descripcion'
+            name='cantidad'
             className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
             type='text'
             required
