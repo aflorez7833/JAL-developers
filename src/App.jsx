@@ -20,6 +20,7 @@ function App() {
   }, [darkMode]);
   const responseGoogle=(respuesta)=>{
     console.log(respuesta);
+    console.log(respuesta.profileObj);
   }
 
   return (
@@ -61,9 +62,9 @@ function App() {
           </Switch>
         </Router>
       </DarkModeContext.Provider>
-      <GoogleLogin
-    clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
-    buttonText="Login"
+      <GoogleLogin 
+    clientId="159820482026-qkv1i7h227s0ep5k6m5bkuvu9kkndvqu.apps.googleusercontent.com"
+    buttonText="ingresa con Google"
     onSuccess={responseGoogle}
     onFailure={responseGoogle}
     cookiePolicy={'single_host_origin'}
